@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Default Title</title>
+  <link th:href="@{/webjars/bootstrap/5.3.5/css/bootstrap.min.css}"
+        rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark"
+     data-bs-theme="dark">
+  <div class="container-fluid">
+    <label class="navbar-brand">
+      <strong sec:authorize="isAuthenticated()"
+              th:text="${#authentication?.name ?: ''}"></strong>
+      <span sec:authorize="isAuthenticated()"> with roles: </span>
+      <span sec:authorize="isAuthenticated()"
+            th:text="${#strings.listJoin(#authentication?.authorities.![name], ' ')}"></span>
+    </label>
+    <form sec:authorize="isAuthenticated()"
+          class="d-flex"
+          th:action="@{/logout}"
+          th:method="post">
+      <input type="hidden"
+             th:name="${_csrf.parameterName}"
+             th:value="${_csrf.token}"/>
+      <button class="btn btn-outline-secondary"
+              type="submit">Logout</button>
+    </form>
+    <form sec:authorize="!isAuthenticated()"
+          class="d-flex"
+          th:action="@{/login}"
+          th:method="get">
+      <button class="btn btn-outline-secondary"
+              type="submit">Login</button>
+    </form>
+  </div>
+</nav>
+
+<!-- Toast для уведомлений -->
+<div class="toast-container top-0 end-0 p-3 m-3">
+  <div class="toast align-items-center text-white bg-success"
+       role="alert"
+       aria-live="assertive"
+       aria-atomic="true"
+       id="successToast">
+    <div class="d-flex">
+      <div class="toast-body"
+           id="toastMessage">
+        Operation completed successfully!
+      </div>
+      <button type="button"
+              class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast"
+              aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid min-vh-100">
+  <div class="row min-vh-100">
+    <div class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse" id="sidebar">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li sec:authorize="hasRole('ADMIN')"
+              class="nav-item">
+            <a class="nav-link"
+               id="adminNavLink"
+               th:href="@{/templates/admin}">
+              Admin
+            </a>
+          </li>
+          <li sec:authorize="hasRole('USER')" class="nav-item">
+            <a class="nav-link"
+               id="userNavLink"
+               th:href="@{/templates/user}">
+              User
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-light" layout:fragment="content">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" layout:fragment="header">Заголовок страницы</h1>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer layout:fragment="footer"></footer>
+
+<script th:src="@{/webjars/bootstrap/5.3.5/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/sidebar.js}"></script>
+<div layout:fragment="scripts"></div>
+</body>
+</html>

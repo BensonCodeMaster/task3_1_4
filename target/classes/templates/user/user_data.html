@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Data</title>
+</head>
+<body>
+<main layout:fragment="content">
+  <h1>User information page</h1>
+  <h2>About user</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Firstname</th>
+      <th scope="col">Lastname</th>
+      <th scope="col">Age</th>
+      <th scope="col">Username</th>
+      <th scope="col">Roles</th>
+    </tr>
+    </thead>
+    <tbody id="selfUserDataTableBody"></tbody>
+  </table>
+</main>
+<div layout:fragment="scripts">
+  <script th:src="@{/js/self_user_data.js}"></script>
+</div>
+</body>
+</html>
