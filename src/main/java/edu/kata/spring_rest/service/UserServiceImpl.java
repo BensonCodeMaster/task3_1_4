@@ -23,14 +23,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDTO> getUsersList() {
         return userRepository
-                .findAll().stream()
+                .findAllWithRoles()  // Используем метод с JOIN FETCH
+                .stream()
                 .map(UserDTO::fromUser)
                 .collect(Collectors.toList());
     }
-
     @Override
+    @Transactional
     public UserDTO getUserById(Long userId) {
         return UserDTO.fromUser(
                 userRepository

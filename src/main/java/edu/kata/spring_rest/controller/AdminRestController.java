@@ -36,6 +36,7 @@ public class AdminRestController {
     }
 
     @GetMapping(path = {"/user_list"})
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getUserList() {
         return userService.getUsersList();
     }

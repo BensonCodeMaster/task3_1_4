@@ -1,6 +1,9 @@
 package edu.kata.spring_rest.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 
 public class UserDTO {
     private Long id;
@@ -83,6 +86,7 @@ public class UserDTO {
                 ", age = " + age +
                 "]";
     }
+
 
     public static UserDTO fromUser(User user) {
         UserDTO userDTO = new UserDTO();
